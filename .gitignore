@@ -1,0 +1,17 @@
+main
+*.tst
+*~
+*.o
+[#]*[#]
+.[#]*
+__pycache__
+*.py[co]
+.nfs*
+*.swp
+*.a
+*.so
+a.out
+SDL
+SDL-build
+SDL_ttf-2.0.11
+sdl-ttf2.0_2.0.11.orig.tar.gz
