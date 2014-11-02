@@ -10,21 +10,26 @@
 #define ARENA_SIZE 0x70000000
 #endif
 
+#ifndef REDZONE_SIZE
+#define REDZONE_SIZE 64
+#endif
+
 static char arena[ARENA_SIZE];
 static size_t pos;
 static int marker;
 
 static void *real_malloc(size_t s) {
   char *result = arena+pos;
-  assert(s<ARENA_SIZE-pos);
+  assert(s<ARENA_SIZE-pos-2*REDZONE_SIZE);
   pos += s;
-  return result;
+  pos += 2*REDZONE_SIZE;
+  return result+REDZONE_SIZE;
 }
 
 static void trace_init()
 {
   marker=1;
-  VALGRIND_CREATE_MEMPOOL(&marker, 0, 1);
+  VALGRIND_CREATE_MEMPOOL(&marker, REDZONE_SIZE, 1);
 }
 
 void *malloc(size_t s) {
