@@ -20,7 +20,7 @@ static int marker;
 
 static void *real_malloc(size_t s) {
   char *result = arena+pos;
-  assert(s<ARENA_SIZE-pos-2*REDZONE_SIZE);
+  if(s>=ARENA_SIZE-pos-2*REDZONE_SIZE) return 0;
   pos += s;
   pos += 2*REDZONE_SIZE;
   return result+REDZONE_SIZE;
@@ -30,6 +30,9 @@ static void trace_init()
 {
   marker=1;
   VALGRIND_CREATE_MEMPOOL(&marker, REDZONE_SIZE, 1);
+  if(getenv("ARENA_SZ")) {
+    pos = ARENA_SIZE - atoi(getenv("ARENA_SZ"));
+  }
 }
 
 void *malloc(size_t s) {

@@ -1,4 +1,4 @@
-arenaalloc.so: preload.o
+preload.so: preload.o
 	gcc -shared -o preload.so preload.o
 
 preload.o: preload.c
@@ -8,4 +8,3 @@ clean:
 	rm -f arenaalloc.so preload.o
 
 .PHONY: clean
-
